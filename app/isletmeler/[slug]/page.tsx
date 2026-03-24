@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { EmptyState } from "@/components/shared/empty-state";
 import { getBusinessBySlug } from "@/lib/data/queries";
 import type { BusinessListItem } from "@/lib/data/types";
 
@@ -67,26 +68,37 @@ export default async function BusinessDetailPage({ params }: Props) {
 
           <Card className="space-y-4">
             <h2 className="text-2xl font-semibold">Personel</h2>
-            <div className="grid gap-3 md:grid-cols-2">
-              {business.staff.map((staff) => (
-                <div key={staff.id} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                  <p className="font-medium text-white">{staff.full_name}</p>
-                  <p className="text-sm">Aktif personel</p>
-                </div>
-              ))}
-            </div>
+            {business.staff.length === 0 ? (
+              <EmptyState
+                title="Personel bilgisi yok"
+                description="Bu işletme henüz personel listesini yayınlamadı."
+              />
+            ) : (
+              <div className="grid gap-3 md:grid-cols-2">
+                {business.staff.map((staff) => (
+                  <div key={staff.id} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="font-medium text-white">{staff.full_name}</p>
+                    <p className="text-sm">Aktif personel</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </Card>
 
           <Card className="space-y-4">
             <h2 className="text-2xl font-semibold">Yorumlar</h2>
-            <div className="space-y-3">
-              {reviews.map((review) => (
-                <div key={review.name} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                  <p className="font-medium text-white">{review.name} • {"⭐".repeat(review.score)}</p>
-                  <p className="text-sm">{review.comment}</p>
-                </div>
-              ))}
-            </div>
+            {reviews.length === 0 ? (
+              <EmptyState title="Henüz yorum yok" description="Bu işletme için ilk yorumu randevu sonrası siz bırakabilirsiniz." />
+            ) : (
+              <div className="space-y-3">
+                {reviews.map((review) => (
+                  <div key={review.name} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <p className="font-medium text-white">{review.name} • {"⭐".repeat(review.score)}</p>
+                    <p className="text-sm">{review.comment}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </Card>
         </div>
 

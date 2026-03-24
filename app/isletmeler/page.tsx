@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/shared/empty-state";
 import { getBusinesses } from "@/lib/data/queries";
 
 type SearchParams = {
@@ -61,7 +62,12 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
       </Card>
 
       {filtered.length === 0 ? (
-        <Card><p className="text-sm">Seçtiğiniz filtrelere uygun işletme bulunamadı.</p></Card>
+        <EmptyState
+          title="Sonuç bulunamadı"
+          description="Filtreleri değiştirip tekrar deneyin veya tüm işletmeleri listeleyin."
+          actionHref="/isletmeler"
+          actionLabel="Filtreleri Sıfırla"
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((business) => (
