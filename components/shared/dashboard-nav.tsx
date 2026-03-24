@@ -9,6 +9,8 @@ type NavLink = {
 const businessLinks: NavLink[] = [
   { href: "/isletme/panel", label: "Genel Bakış" },
   { href: "/isletme/takvim", label: "Takvim" },
+  { href: "/isletme/calisma-saatleri" as Route, label: "Çalışma Saatleri" },
+  { href: "/isletme/bloke-zamanlar" as Route, label: "Bloke Zamanlar" },
   { href: "/isletme/hizmetler", label: "Hizmetler" },
   { href: "/isletme/personel", label: "Personel" },
   { href: "/isletme/musteriler", label: "Müşteriler" },
