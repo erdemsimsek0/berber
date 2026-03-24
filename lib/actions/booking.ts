@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { bookingSchema } from "@/lib/validators/booking";
 import { createClient } from "@/lib/supabase/server";
+import { resolveBookableSlot } from "@/lib/booking/availability";
 
 export async function createAppointmentAction(formData: FormData) {
   const parsed = bookingSchema.safeParse({
@@ -58,7 +59,6 @@ export async function createAppointmentAction(formData: FormData) {
     customerId = customer.id;
   }
 
-  const startAt = new Date(`${parsed.data.date}T${parsed.data.time}:00+03:00`);
   const { data: serviceData } = await supabase
     .from("services")
     .select("duration_min")
@@ -68,16 +68,27 @@ export async function createAppointmentAction(formData: FormData) {
 
   if (!service) return { ok: false as const, message: "Hizmet bulunamadı" };
 
-  const endAt = new Date(startAt.getTime() + service.duration_min * 60 * 1000);
+  const slot = await resolveBookableSlot({
+    businessId: business.business_id,
+    branchId: parsed.data.branchId,
+    serviceId: parsed.data.serviceId,
+    staffId: parsed.data.staffId ?? null,
+    date: parsed.data.date,
+    time: parsed.data.time
+  });
+
+  if (!slot) {
+    return { ok: false as const, message: "Seçilen saat artık uygun değil. Lütfen farklı bir saat seçin." };
+  }
 
   const { error } = await supabase.from("appointments").insert({
     business_id: business.business_id,
     branch_id: parsed.data.branchId,
     service_id: parsed.data.serviceId,
-    staff_id: parsed.data.staffId,
+    staff_id: slot.staffId,
     customer_id: customerId,
-    start_at: startAt.toISOString(),
-    end_at: endAt.toISOString(),
+    start_at: slot.startAt.toISOString(),
+    end_at: slot.endAt.toISOString(),
     status: "pending"
   });
 
