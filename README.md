@@ -41,6 +41,11 @@ Türkiye'deki berber, kuaför, güzellik salonu ve nail studio işletmeleri içi
    npm run dev
    ```
 
+## Vercel Notu
+
+- Proje kökünde `vercel.json` ile `framework: nextjs` ve `outputDirectory: .next` tanımlıdır.
+- Vercel panelinde daha önce `Output Directory = public` verilmişse temizleyin veya `.next` olarak güncelleyin.
+
 ## Supabase Dosyaları
 
 - Şema ve RLS migration: `supabase/migrations/20260324090000_init.sql`
