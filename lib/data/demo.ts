@@ -1,4 +1,6 @@
-export const demoBusinesses = [
+import type { BusinessListItem } from "@/lib/data/types";
+
+export const demoBusinesses: BusinessListItem[] = [
   {
     id: "10000000-0000-0000-0000-000000000001",
     slug: "ustura-lounge",
@@ -41,8 +43,8 @@ export const demoBusinesses = [
       { id: "22222222-2222-2222-2222-222222222225", name: "Kalıcı Oje", duration_min: 60, price_try: 650 }
     ]
   }
-] as const;
+];
 
-export function findDemoBusinessBySlug(slug: string) {
+export function findDemoBusinessBySlug(slug: string): BusinessListItem | null {
   return demoBusinesses.find((item) => item.slug === slug) ?? null;
 }

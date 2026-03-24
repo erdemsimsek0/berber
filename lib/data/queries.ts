@@ -1,3 +1,4 @@
+import type { BusinessListItem } from "@/lib/data/types";
 import { createClient } from "@/lib/supabase/server";
 import { demoBusinesses, findDemoBusinessBySlug } from "@/lib/data/demo";
 
@@ -5,7 +6,18 @@ function canUseSupabase() {
   return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 }
 
-export async function getBusinesses() {
+type SupabaseBusinessRow = {
+  id: string;
+  slug: string;
+  name: string;
+  city: string;
+  district: string;
+  description: string | null;
+  branches: BusinessListItem["branches"] | null;
+  services: BusinessListItem["services"] | null;
+};
+
+export async function getBusinesses(): Promise<BusinessListItem[]> {
   if (!canUseSupabase()) return demoBusinesses;
 
   const supabase = await createClient();
@@ -17,7 +29,7 @@ export async function getBusinesses() {
 
   if (error || !data?.length) return demoBusinesses;
 
-  return data.map((business) => ({
+  return (data as SupabaseBusinessRow[]).map((business: SupabaseBusinessRow) => ({
     ...business,
     rating: 4.8,
     branches: business.branches ?? [],
@@ -25,7 +37,7 @@ export async function getBusinesses() {
   }));
 }
 
-export async function getBusinessBySlug(slug: string) {
+export async function getBusinessBySlug(slug: string): Promise<BusinessListItem | null> {
   if (!canUseSupabase()) return findDemoBusinessBySlug(slug);
 
   const supabase = await createClient();
@@ -38,10 +50,11 @@ export async function getBusinessBySlug(slug: string) {
 
   if (error || !business) return findDemoBusinessBySlug(slug);
 
+  const typedBusiness = business as SupabaseBusinessRow;
   return {
-    ...business,
+    ...typedBusiness,
     rating: 4.8,
-    branches: business.branches ?? [],
-    services: business.services ?? []
+    branches: typedBusiness.branches ?? [],
+    services: typedBusiness.services ?? []
   };
 }
