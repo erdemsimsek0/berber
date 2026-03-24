@@ -3,8 +3,25 @@ import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 
 export const metadata: Metadata = {
-  title: "RandevuTR | Çok Kiracılı Güzellik ve Berber Randevu SaaS",
-  description: "Türkiye'deki berber, kuaför, nail studio ve güzellik salonları için çok kiracılı randevu platformu."
+  metadataBase: new URL("https://randevutr.com"),
+  title: {
+    default: "RandevuTR | Berber ve Güzellik İşletmeleri için Online Randevu",
+    template: "%s | RandevuTR"
+  },
+  description: "Türkiye'deki berber, kuaför, nail studio ve güzellik işletmeleri için online randevu ve işletme yönetimi platformu.",
+  alternates: {
+    canonical: "/"
+  },
+  openGraph: {
+    title: "RandevuTR",
+    description: "Berber ve güzellik işletmeleri için online randevu platformu.",
+    type: "website",
+    locale: "tr_TR"
+  },
+  robots: {
+    index: true,
+    follow: true
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
