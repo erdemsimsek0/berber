@@ -4,18 +4,19 @@ import { cn } from "@/lib/utils/cn";
 import type { ButtonHTMLAttributes } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/35",
+  "inline-flex items-center justify-center rounded-2xl font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/25",
   {
     variants: {
       variant: {
-        default: "bg-blue-600 text-white shadow-sm hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow",
-        outline: "border border-slate-300 bg-white text-slate-800 hover:border-slate-400 hover:bg-slate-50",
-        ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+        default:
+          "bg-gradient-to-r from-violet-500 via-blue-500 to-pink-500 text-white shadow-[0_8px_30px_rgba(139,92,246,0.35)] hover:scale-[1.02] hover:shadow-[0_10px_34px_rgba(139,92,246,0.45)]",
+        outline: "border border-white/20 bg-white/5 text-slate-100 hover:scale-[1.02] hover:bg-white/10",
+        ghost: "text-slate-300 hover:bg-white/10 hover:text-white"
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 px-3",
-        lg: "h-11 px-8 text-base"
+        default: "h-11 px-4 text-sm",
+        sm: "h-9 px-3 text-sm",
+        lg: "h-12 px-8 text-base"
       }
     },
     defaultVariants: {

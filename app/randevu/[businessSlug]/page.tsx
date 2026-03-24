@@ -18,14 +18,12 @@ export default async function BookingPage({ params }: { params: Promise<{ busine
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">{business.name} için Randevu</h1>
-        <p className="text-sm text-slate-600 sm:text-base">Adımları tamamlayın, uygun saatleri görün ve randevunuzu hemen onaylayın.</p>
+        <h1 className="text-4xl font-bold">{business.name} için Randevu</h1>
+        <p className="text-sm sm:text-base">Adımları tamamlayın ve randevunuzu saniyeler içinde onaylayın.</p>
       </div>
-      <Card className="p-4 sm:p-6">
-        <PublicBookingFlow business={business} />
-      </Card>
+      <PublicBookingFlow business={business} />
     </div>
   );
 }

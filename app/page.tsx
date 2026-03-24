@@ -2,119 +2,122 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Section } from "@/components/ui/section";
 
 export const metadata: Metadata = {
-  title: "Online Randevu ile Berber ve Güzellik İşletmelerini Keşfedin",
+  title: "Berber ve Güzellik Salonları için Online Randevu Sistemi",
   description:
-    "Şehrinizdeki berber, kuaför ve güzellik salonlarını karşılaştırın; hizmet, fiyat ve uygun saat bilgileriyle online randevunuzu hızlıca oluşturun.",
+    "Berber ve güzellik salonları için online randevu, personel yönetimi ve müşteri takibi sunan modern SaaS platformu.",
   alternates: {
     canonical: "/"
   }
 };
 
-const highlights = [
-  {
-    title: "İşletmeleri tek listede görün",
-    description: "Şube bilgisi, hizmetler ve puan gibi temel verileri tek sayfada karşılaştırın."
-  },
-  {
-    title: "Uygun saatleri kontrol edin",
-    description: "Seçtiğiniz hizmet ve tarihe göre müsait saatleri görüntüleyip hızlıca seçim yapın."
-  },
-  {
-    title: "Randevuyu adım adım tamamlayın",
-    description: "Kısa form akışı sayesinde işlemi yarıda bırakmadan tamamlamak kolaylaşır."
-  }
+const stats = [
+  ["Aktif İşletme", "1.250+"],
+  ["Aylık Randevu", "84.000+"],
+  ["Ortalama Puan", "4.8/5"],
+  ["Aktif Şube", "3.400+"]
 ];
 
-const faqs = [
-  {
-    question: "Randevu almak için üyelik gerekli mi?",
-    answer: "Hayır. Uygun işletmede doğrudan tarih-saat seçip iletişim bilgilerinizle randevu oluşturabilirsiniz."
-  },
-  {
-    question: "Aynı gün için randevu alabilir miyim?",
-    answer: "İşletmenin çalışma saatleri ve doluluk durumuna göre aynı gün için uygun slotlar listelenir."
-  },
-  {
-    question: "İşletme bilgilerinde neleri görebilirim?",
-    answer: "Konum, hizmetler, süre/fiyat bilgileri ve randevuya yönlendiren bağlantıları görebilirsiniz."
-  }
+const features = [
+  "Online randevu yönetimi",
+  "Personel yönetimi",
+  "Takvim sistemi",
+  "Müşteri takibi"
+];
+
+const howItWorks = [
+  ["01", "İşletmeni oluştur", "Şube, hizmet ve personel bilgilerini birkaç adımda ekle."],
+  ["02", "Takvimi düzenle", "Çalışma saatleri ve bloke zamanlarla kapasiteyi kontrol et."],
+  ["03", "Randevuları yönet", "Müşteri randevularını panelden takip et ve güncelle."]
+];
+
+const popular = [
+  ["Studio Nova", "İstanbul / Kadıköy", "Kuaför"],
+  ["Barber Craft", "Ankara / Çankaya", "Berber"],
+  ["Glow Beauty", "İzmir / Alsancak", "Güzellik Merkezi"]
 ];
 
 export default function HomePage() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer
-      }
-    }))
-  };
-
   return (
-    <div className="space-y-10">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-600 p-7 text-white shadow-xl sm:p-10 lg:p-14">
-        <div className="absolute -right-16 -top-24 h-56 w-56 rounded-full bg-white/20 blur-2xl" aria-hidden />
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-blue-100">Türkiye için online randevu</p>
-        <h1 className="max-w-3xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-          Berber ve güzellik işletmelerini karşılaştırın, randevunuzu hızlıca alın
+    <div className="space-y-12">
+      <Section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-10 lg:p-14">
+        <div className="absolute -left-14 top-0 h-40 w-40 rounded-full bg-violet-500/30 blur-3xl" aria-hidden />
+        <div className="absolute -right-20 bottom-0 h-52 w-52 rounded-full bg-blue-500/25 blur-3xl" aria-hidden />
+        <Badge variant="accent">Yeni Nesil Randevu Platformu</Badge>
+        <h1 className="max-w-4xl text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+          Berber ve Güzellik Salonları için Online Randevu Sistemi
         </h1>
-        <p className="mt-4 max-w-2xl text-sm text-blue-100 sm:text-base">
-          İşletme profillerinde hizmet/fiyat bilgilerini görün, uygun saatleri kontrol edin ve kısa adımlarla rezervasyonu tamamlayın.
+        <p className="max-w-2xl text-sm sm:text-base">
+          İşletmenizin randevu, personel ve müşteri süreçlerini tek panelde toplayın. Müşterileriniz hızlıca uygun saat bulsun, siz operasyonu net yönetin.
         </p>
-        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-          <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800">
-            <Link href="/isletmeler">İşletmeleri Gör</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="border-white/70 bg-white/10 text-white hover:bg-white/20">
-            <Link href="/baslangic/isletme">İşletmeni Ekle</Link>
-          </Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button asChild size="lg"><Link href="/baslangic/isletme">Ücretsiz Başla</Link></Button>
+          <Button asChild size="lg" variant="outline"><Link href="/isletmeler">Demo Gör</Link></Button>
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="neden-randevutr" className="space-y-4">
-        <h2 id="neden-randevutr" className="text-2xl font-bold">Randevu sürecini kolaylaştıran yapı</h2>
+      <Section>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map(([label, value]) => (
+            <Card key={label} className="space-y-1 p-5">
+              <p className="text-sm text-slate-400">{label}</p>
+              <p className="text-2xl font-semibold text-white">{value}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <h2 className="text-3xl font-bold">Öne çıkan özellikler</h2>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {features.map((item) => (
+            <Card key={item} className="p-6">
+              <p className="text-lg font-semibold text-white">{item}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <h2 className="text-3xl font-bold">Nasıl çalışır?</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {highlights.map((item) => (
-            <Card key={item.title} className="space-y-2">
-              <h3 className="text-base font-semibold text-slate-900">{item.title}</h3>
-              <p className="text-sm text-slate-600">{item.description}</p>
+          {howItWorks.map(([step, title, desc]) => (
+            <Card key={step} className="space-y-3 p-6">
+              <Badge>{step}</Badge>
+              <h3 className="text-xl font-semibold">{title}</h3>
+              <p className="text-sm">{desc}</p>
             </Card>
           ))}
         </div>
-      </section>
+      </Section>
 
-      <section aria-labelledby="hizli-linkler" className="grid gap-4 md:grid-cols-2">
-        <Card className="space-y-3">
-          <h2 id="hizli-linkler" className="text-xl font-semibold">Randevu arayanlar için</h2>
-          <p className="text-sm text-slate-600">İşletmeleri şehir ve hizmete göre filtreleyip size uygun olan profile geçin.</p>
-          <Link href="/isletmeler" className="text-sm font-medium text-blue-700 hover:text-blue-800">İşletme listesine git →</Link>
-        </Card>
-        <Card className="space-y-3">
-          <h2 className="text-xl font-semibold">İşletmesini dijitale taşımak isteyenler için</h2>
-          <p className="text-sm text-slate-600">Şube, hizmet ve personel bilgilerinizi girip online randevuya hızlıca başlayın.</p>
-          <Link href="/baslangic/isletme" className="text-sm font-medium text-blue-700 hover:text-blue-800">İşletme oluşturma adımlarına git →</Link>
-        </Card>
-      </section>
-
-      <section aria-labelledby="sik-sorulan" className="space-y-4">
-        <h2 id="sik-sorulan" className="text-2xl font-bold">Sık sorulan sorular</h2>
-        <div className="space-y-3">
-          {faqs.map((faq) => (
-            <Card key={faq.question} className="space-y-2">
-              <h3 className="text-base font-semibold">{faq.question}</h3>
-              <p className="text-sm text-slate-600">{faq.answer}</p>
+      <Section>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-3xl font-bold">Popüler işletmeler</h2>
+          <Link href="/isletmeler" className="text-sm font-medium text-violet-300 hover:text-violet-200">Tümünü gör →</Link>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {popular.map(([name, location, category]) => (
+            <Card key={name} className="space-y-2 p-6">
+              <div className="h-28 rounded-2xl bg-gradient-to-r from-violet-500/35 to-blue-500/35" />
+              <h3 className="text-lg font-semibold">{name}</h3>
+              <p className="text-sm">{location}</p>
+              <Badge>{category}</Badge>
             </Card>
           ))}
         </div>
-      </section>
+      </Section>
+
+      <Section className="rounded-[28px] border border-violet-300/25 bg-gradient-to-r from-violet-500/20 via-blue-500/20 to-pink-500/20 p-7 text-center shadow-[0_10px_40px_rgba(139,92,246,0.2)] sm:p-10">
+        <h2 className="text-3xl font-bold">Hemen ücretsiz dene</h2>
+        <p className="mx-auto max-w-2xl text-sm sm:text-base">Kuruluma dakikalar içinde başla, randevu süreçlerini aynı gün içinde dijitale taşı.</p>
+        <div className="flex justify-center">
+          <Button asChild size="lg"><Link href="/baslangic/isletme">Ücretsiz Başla</Link></Button>
+        </div>
+      </Section>
     </div>
   );
 }

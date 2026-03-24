@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { DashboardNav } from "@/components/shared/dashboard-nav";
+import { Badge } from "@/components/ui/badge";
 
 export default function BusinessDashboardPage() {
   const stats = [
@@ -10,19 +11,31 @@ export default function BusinessDashboardPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <DashboardNav type="business" />
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-sm text-slate-600 sm:text-base">İşletmenizin günlük performansını tek bakışta takip edin.</p>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map(([key, value]) => (
-          <Card key={key} className="space-y-1 border-slate-200/90 p-5">
-            <p className="text-sm text-slate-500">{key}</p>
-            <p className="text-2xl font-semibold text-slate-900">{value}</p>
-          </Card>
-        ))}
+    <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+      <aside className="lg:sticky lg:top-24 lg:h-fit">
+        <Card className="space-y-3 p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400">İşletme Paneli</p>
+          <DashboardNav type="business" />
+        </Card>
+      </aside>
+
+      <div className="space-y-5">
+        <Card className="flex flex-wrap items-center justify-between gap-3 p-5">
+          <div>
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <p className="text-sm">İşletmenizin haftalık görünümünü buradan takip edin.</p>
+          </div>
+          <Badge variant="accent">Canlı Görünüm</Badge>
+        </Card>
+
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stats.map(([key, value]) => (
+            <Card key={key} className="space-y-1 p-5">
+              <p className="text-sm text-slate-400">{key}</p>
+              <p className="text-2xl font-semibold text-white">{value}</p>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

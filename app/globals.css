@@ -3,30 +3,41 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 @layer base {
   * {
-    @apply border-slate-200;
+    @apply border-white/10;
   }
 
   body {
-    @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
-    background-image: radial-gradient(circle at 20% -20%, rgba(59, 130, 246, 0.14), transparent 40%),
-      radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.12), transparent 32%);
+    @apply min-h-screen bg-[#0b0b0f] text-slate-100 antialiased;
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(168, 85, 247, 0.22), transparent 30%),
+      radial-gradient(circle at 88% 0%, rgba(59, 130, 246, 0.2), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.16), transparent 38%),
+      linear-gradient(180deg, #0b0b0f 0%, #0a0a12 100%);
   }
 
   h1,
   h2,
-  h3 {
-    @apply tracking-tight text-slate-950;
+  h3,
+  h4 {
+    @apply tracking-tight text-white;
+  }
+
+  p,
+  li,
+  span,
+  label {
+    @apply text-slate-300;
   }
 
   input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
   select,
   textarea {
-    @apply rounded-xl border border-slate-300 bg-white text-slate-900 shadow-sm transition placeholder:text-slate-400 focus-visible:border-blue-400 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/15;
+    @apply rounded-2xl border border-white/15 bg-white/5 text-slate-100 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur-md transition placeholder:text-slate-500 focus-visible:border-violet-400/70 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/15;
   }
 
   input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
@@ -41,10 +52,14 @@
 
 @layer components {
   .container-app {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
   }
 
-  .surface {
-    @apply rounded-2xl border border-slate-200/90 bg-white/95 shadow-sm backdrop-blur;
+  .glass-surface {
+    @apply rounded-2xl border border-white/10 bg-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl;
+  }
+
+  .section-shell {
+    @apply glass-surface p-5 sm:p-6;
   }
 }

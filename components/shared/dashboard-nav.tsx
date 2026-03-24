@@ -5,10 +5,7 @@ import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils/cn";
 
-type NavLink = {
-  href: Route;
-  label: string;
-};
+type NavLink = { href: Route; label: string };
 
 const businessLinks: NavLink[] = [
   { href: "/isletme/panel", label: "Genel Bakış" },
@@ -36,21 +33,19 @@ export function DashboardNav({ type }: { type: "business" | "admin" }) {
   const links = type === "business" ? businessLinks : adminLinks;
 
   return (
-    <nav className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Panel navigasyonu">
+    <nav className="flex gap-2 overflow-x-auto lg:block lg:space-y-2" aria-label="Panel navigasyonu">
       {links.map((link) => {
-        const isActive = pathname === link.href;
-
+        const active = pathname === link.href;
         return (
           <Link
             key={link.href}
             href={link.href}
             className={cn(
-              "whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
-              isActive
-                ? "border-blue-200 bg-blue-600 text-white shadow-sm"
-                : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-900"
+              "inline-flex whitespace-nowrap rounded-xl border px-3 py-2 text-sm font-medium transition lg:flex",
+              active
+                ? "border-violet-300/30 bg-violet-500/20 text-violet-100"
+                : "border-white/10 bg-white/5 text-slate-300 hover:scale-[1.02] hover:bg-white/10"
             )}
-            aria-current={isActive ? "page" : undefined}
           >
             {link.label}
           </Link>
