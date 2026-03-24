@@ -58,6 +58,14 @@ Türkiye'deki berber, kuaför, güzellik salonu ve nail studio işletmeleri içi
 - `business_staff`
 - `super_admin`
 
+## RLS Rol Modeli (Supabase)
+
+- **`business_owner`**: Sadece sahibi olduğu `business` ve bağlı kayıtları (şube, personel, hizmet, müşteri, randevu, ödeme, kupon, abonelik) okuyup yönetebilir.
+- **`business_staff`**: Atandığı işletme/şube kapsamında veri okuyabilir; şube kapsamı dışında kayıtlara erişemez.
+- **`customer`**: Auth ile eşleşen müşteri kaydı üzerinden yalnızca kendi profil ve randevu kayıtlarına erişebilir.
+- **`super_admin`**: `public.users.role = super_admin` olan kullanıcılar için tüm tenantlar arası erişim ayrı helper fonksiyonlarla izole edilmiştir.
+- Anonim booking insertleri yalnızca aktif işletme ve geçerli tenant ilişki kontrollerinden geçerse kabul edilir; geniş (`with check true`) politikalar kaldırılmıştır.
+
 ## TODO (Bilinçli Olarak Sonraya Bırakılanlar)
 
 - Auth sayfalarını Supabase Auth ile gerçek oturum akışına bağlamak.
