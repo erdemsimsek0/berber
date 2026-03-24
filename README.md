@@ -2,53 +2,80 @@
 
 Türkiye'deki berber, kuaför, güzellik salonu ve nail studio işletmeleri için çok kiracılı randevu SaaS MVP.
 
-## Teknolojiler
+## Teknoloji Yığını
 
 - Next.js 16 (App Router)
 - TypeScript
 - Tailwind CSS
-- shadcn/ui bileşen yaklaşımı (`components/ui`)
-- Supabase (Postgres + Auth + Storage altyapısı)
 - React Hook Form + Zod
+- Supabase (Postgres + Auth)
 
 ## Özellik Kapsamı
 
-- **Public sayfalar:** Ana sayfa, işletme listeleme, işletme detay, giriş/kayıt.
-- **Randevu akışı:** Şube/hizmet/personel/tarih-saat/müşteri bilgisi adımları + başarı ekranı.
-- **Müşteri paneli:** Randevularım (yaklaşan/geçmiş), profil, iptal ve yeniden planlama bağlantısı.
-- **İşletme onboarding:** İşletme, şube, hizmet, personel, çalışma saatleri, tamamlandı.
-- **İşletme paneli:** Dashboard, takvim, hizmet/personel CRUD modül ekranları, müşteri, yorum, kupon, rapor, ayar, abonelik.
-- **Super admin:** İşletmeler, abonelikler, sistem genel bakış.
-- **Veri modeli:** Çok kiracılı RLS, çift rezervasyon önleme, durum yönetimi, bloklu zamanlar, çalışma saatleri, tamamlanan randevu sonrası yorum kuralı.
+- **Public:** Ana sayfa, işletme listeleme/detay, randevu akışı.
+- **Müşteri:** Profil ve randevu geçmişi.
+- **İşletme:** Dashboard, hizmet/personel/müşteri/kupon/yorum/ayar ekranları.
+- **Admin:** Sistem, işletmeler, abonelikler.
+- **Veri modeli:** Çok kiracılı RLS, çakışma önleyen randevu kurgusu, bloklu zaman ve çalışma saatleri.
 
-## Kurulum
+---
 
-1. Paketleri yükleyin:
-   ```bash
-   npm install
-   ```
-2. `.env.local` oluşturun:
-   ```bash
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   ```
-3. Supabase migration çalıştırın:
-   ```bash
-   supabase db reset
-   ```
-4. Geliştirme sunucusu:
-   ```bash
-   npm run dev
-   ```
+## Hızlı Başlangıç
 
-## Vercel Notu
+### 1) Gereksinimler
 
-- Proje kökünde `vercel.json` ile `framework: nextjs` ve `outputDirectory: .next` tanımlıdır.
-- Vercel panelinde daha önce `Output Directory = public` verilmişse temizleyin veya `.next` olarak güncelleyin.
+- Node.js `>=20`
+- npm `>=10`
+- (Opsiyonel) Supabase CLI
+
+### 2) Kurulum
+
+```bash
+npm install
+```
+
+### 3) Ortam değişkenleri
+
+Proje kökünde `.env.local` oluşturun:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
+
+> Bu değişkenler yoksa public sayfalarda demo veri fallback'i devreye girer.
+
+### 4) Veritabanı (Supabase kullanıyorsanız)
+
+```bash
+supabase db reset
+```
+
+Bu komut migration + seed dosyalarını uygular.
+
+### 5) Çalıştırma
+
+```bash
+npm run dev
+```
+
+Uygulama: `http://localhost:3000`
+
+---
+
+## Scriptler
+
+```bash
+npm run dev        # geliştirme
+npm run build      # production build
+npm run start      # production server
+npm run lint       # Next lint
+npm run typecheck  # TypeScript kontrolü
+```
 
 ## Supabase Dosyaları
 
-- Şema ve RLS migration: `supabase/migrations/20260324090000_init.sql`
+- Şema + RLS: `supabase/migrations/`
 - Demo seed: `supabase/seed/demo_seed.sql`
 
 ## Roller
@@ -58,24 +85,13 @@ Türkiye'deki berber, kuaför, güzellik salonu ve nail studio işletmeleri içi
 - `business_staff`
 - `super_admin`
 
-## RLS Rol Modeli (Supabase)
+## Vercel Notu
 
-- **`business_owner`**: Sadece sahibi olduğu `business` ve bağlı kayıtları (şube, personel, hizmet, müşteri, randevu, ödeme, kupon, abonelik) okuyup yönetebilir.
-- **`business_staff`**: Atandığı işletme/şube kapsamında veri okuyabilir; şube kapsamı dışında kayıtlara erişemez.
-- **`customer`**: Auth ile eşleşen müşteri kaydı üzerinden yalnızca kendi profil ve randevu kayıtlarına erişebilir.
-- **`super_admin`**: `public.users.role = super_admin` olan kullanıcılar için tüm tenantlar arası erişim ayrı helper fonksiyonlarla izole edilmiştir.
-- Anonim booking insertleri yalnızca aktif işletme ve geçerli tenant ilişki kontrollerinden geçerse kabul edilir; geniş (`with check true`) politikalar kaldırılmıştır.
+`vercel.json` içinde Next.js framework ayarı mevcut. Vercel panelinde yanlışlıkla `Output Directory = public` verilmişse temizleyin veya `.next` kullanın.
 
-## TODO (Bilinçli Olarak Sonraya Bırakılanlar)
+## Üretim Öncesi Kontrol Önerisi
 
-- Auth sayfalarını Supabase Auth ile gerçek oturum akışına bağlamak.
-- İşletme panelindeki CRUD ekranlarını tablo + form + pagination ile tam operasyonel hale getirmek.
-- Takvim için sürükle-bırak arayüz ve gerçek zamanlı çakışma geri bildirimi eklemek.
-- Ödeme entegrasyonunu (iyzico/PayTR vb.) canlı tahsilat akışıyla tamamlamak.
-- Bildirimleri (SMS/e-posta/push) kuyruk tabanlı worker ile asenkron hale getirmek.
-
-## Notlar
-
-- Para birimi `TRY` baz alınmıştır.
-- UI dili varsayılan Türkçe'dir.
-- Supabase environment değişkenleri yoksa public sayfalarda demo veri fallback'i devreye girer.
+- `npm run typecheck`
+- `npm run build`
+- Supabase ortam değişkenlerini doğrulama
+- RLS politikalarını staging veritabanında test etme

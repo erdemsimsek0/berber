@@ -91,9 +91,13 @@ const dashboardAppointmentSchema = z.object({
   service_id: z.string().uuid(),
   staff_id: z.string().uuid().nullable().optional(),
   customer_id: z.string().uuid(),
-  date: z.string().min(1),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/),
   notes: z.string().optional().or(z.literal(""))
+});
+
+const dashboardServiceSchema = z.object({
+  duration_min: z.number().int().positive()
 });
 
 export async function updateAppointmentStatusAction(formData: FormData): Promise<void> {
@@ -142,10 +146,12 @@ export async function createDashboardAppointmentAction(formData: FormData): Prom
     .eq("business_id", businessId)
     .maybeSingle();
 
-  if (!service) throw new Error("Hizmet bulunamadı");
+  const parsedService = dashboardServiceSchema.safeParse(service);
+  if (!parsedService.success) throw new Error("Hizmet bulunamadı");
 
   const startAt = new Date(`${data.date}T${data.time}:00+03:00`);
-  const endAt = new Date(startAt.getTime() + (service as { duration_min: number }).duration_min * 60 * 1000);
+  if (Number.isNaN(startAt.getTime())) throw new Error("Tarih veya saat geçersiz");
+  const endAt = new Date(startAt.getTime() + parsedService.data.duration_min * 60 * 1000);
 
   await throwIfError(
     (

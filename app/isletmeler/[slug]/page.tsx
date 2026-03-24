@@ -109,28 +109,38 @@ export default async function BusinessDetailPage({ params }: Props) {
       <section aria-labelledby="hizmetler" className="space-y-3">
         <h2 id="hizmetler" className="text-2xl font-bold">Hizmetler ve fiyat aralığı</h2>
         <Card className="space-y-3">
-          <ul className="space-y-2 text-sm text-slate-700">
-            {business.services.map((service: BusinessListItem["services"][number]) => (
-              <li key={service.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 px-3 py-2">
-                <span>{service.name}</span>
-                <span className="text-slate-500">₺{service.price_try} • {service.duration_min} dk</span>
-              </li>
-            ))}
-          </ul>
+          {business.services.length === 0 ? (
+            <p className="text-sm text-slate-600">Bu işletme için henüz hizmet bilgisi eklenmemiş.</p>
+          ) : (
+            <ul className="space-y-2 text-sm text-slate-700">
+              {business.services.map((service: BusinessListItem["services"][number]) => (
+                <li key={service.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 px-3 py-2">
+                  <span>{service.name}</span>
+                  <span className="text-slate-500">₺{service.price_try} • {service.duration_min} dk</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
       </section>
 
       <section aria-labelledby="subeler" className="space-y-3">
         <h2 id="subeler" className="text-2xl font-bold">Şube bilgileri</h2>
-        <div className="grid gap-3 md:grid-cols-2">
-          {business.branches.map((branch) => (
-            <Card key={branch.id} className="space-y-1">
-              <h3 className="font-semibold text-slate-900">{branch.name}</h3>
-              <p className="text-sm text-slate-600">{branch.address}</p>
-              {branch.phone ? <p className="text-sm text-slate-600">Tel: {branch.phone}</p> : null}
-            </Card>
-          ))}
-        </div>
+        {business.branches.length === 0 ? (
+          <Card>
+            <p className="text-sm text-slate-600">Şube bilgisi bulunamadı.</p>
+          </Card>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {business.branches.map((branch) => (
+              <Card key={branch.id} className="space-y-1">
+                <h3 className="font-semibold text-slate-900">{branch.name}</h3>
+                <p className="text-sm text-slate-600">{branch.address}</p>
+                {branch.phone ? <p className="text-sm text-slate-600">Tel: {branch.phone}</p> : null}
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
       <section aria-labelledby="sss" className="space-y-3">
