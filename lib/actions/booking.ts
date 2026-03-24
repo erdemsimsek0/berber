@@ -17,7 +17,7 @@ export async function createAppointmentAction(formData: FormData) {
   });
 
   if (!parsed.success) {
-    return { ok: false, message: parsed.error.issues[0]?.message ?? "Geçersiz veri" };
+    return { ok: false as const, message: parsed.error.issues[0]?.message ?? "Geçersiz veri" };
   }
 
   const supabase = await createClient();
@@ -28,7 +28,7 @@ export async function createAppointmentAction(formData: FormData) {
     .eq("id", parsed.data.branchId)
     .single();
 
-  if (!business) return { ok: false, message: "Şube bulunamadı" };
+  if (!business) return { ok: false as const, message: "Şube bulunamadı" };
 
   const { data: existingCustomer } = await supabase
     .from("customers")
@@ -51,7 +51,7 @@ export async function createAppointmentAction(formData: FormData) {
       .select("id")
       .single();
 
-    if (customerInsertError || !customer) return { ok: false, message: "Müşteri kaydı başarısız" };
+    if (customerInsertError || !customer) return { ok: false as const, message: "Müşteri kaydı başarısız" };
     customerId = customer.id;
   }
 
@@ -62,7 +62,7 @@ export async function createAppointmentAction(formData: FormData) {
     .eq("id", parsed.data.serviceId)
     .single();
 
-  if (!service) return { ok: false, message: "Hizmet bulunamadı" };
+  if (!service) return { ok: false as const, message: "Hizmet bulunamadı" };
 
   const endAt = new Date(startAt.getTime() + service.duration_min * 60 * 1000);
 
@@ -77,10 +77,10 @@ export async function createAppointmentAction(formData: FormData) {
     status: "pending"
   });
 
-  if (error) return { ok: false, message: error.message };
+  if (error) return { ok: false as const, message: error.message };
 
   revalidatePath("/musteri/randevular");
-  return { ok: true };
+  return { ok: true as const, message: "Randevunuz başarıyla oluşturuldu." };
 }
 
 export async function cancelAppointmentAction(appointmentId: string) {
