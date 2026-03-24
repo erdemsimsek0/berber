@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { logoutAction } from "@/app/(auth)/actions";
 
 export function SiteHeader() {
   return (
@@ -20,9 +21,12 @@ export function SiteHeader() {
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
             <Link href="/giris">Giriş</Link>
           </Button>
-          <Button asChild>
+          <Button asChild variant="outline" className="hidden md:inline-flex">
             <Link href="/kayit">Kayıt Ol</Link>
           </Button>
+          <form action={logoutAction}>
+            <Button variant="ghost" size="sm">Çıkış</Button>
+          </form>
         </div>
       </div>
     </header>

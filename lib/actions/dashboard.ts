@@ -38,6 +38,42 @@ export async function upsertStaffAction(formData: FormData): Promise<void> {
 }
 export async function deleteStaffAction(id: string): Promise<void> { await throwIfError((await (await createClient()).from("staff").delete().eq("id", id).eq("business_id", getCurrentBusinessId())).error); revalidatePath("/isletme/personel"); }
 
+export async function upsertStaffServicesAction(formData: FormData): Promise<void> {
+  const staffId = normalizeNullable(formData.get("staff_id"));
+  const serviceIds = String(formData.get("service_ids") ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (!staffId) throw new Error("Personel seçimi zorunludur");
+
+  const supabase = await createClient();
+
+  await throwIfError(
+    (
+      await supabase
+        .from("staff_services")
+        .delete()
+        .eq("staff_id", staffId)
+    ).error
+  );
+
+  if (serviceIds.length > 0) {
+    await throwIfError(
+      (
+        await supabase.from("staff_services").insert(
+          serviceIds.map((serviceId) => ({
+            staff_id: staffId,
+            service_id: serviceId
+          }))
+        )
+      ).error
+    );
+  }
+
+  revalidatePath("/isletme/personel");
+}
+
 export async function updateCustomerAction(formData: FormData): Promise<void> {
   const data = ensure(customerSchema.safeParse({ id: formData.get("id"), full_name: formData.get("full_name"), phone: formData.get("phone"), email: formData.get("email") }), "Müşteri verisi geçersiz");
   await throwIfError((await (await createClient()).from("customers").update({ full_name: data.full_name, phone: data.phone, email: data.email || null }).eq("id", data.id).eq("business_id", getCurrentBusinessId())).error);
@@ -85,7 +121,7 @@ export async function updateBusinessSettingsAction(formData: FormData): Promise<
 
 const appointmentStatusSchema = z.object({
   id: z.string().uuid(),
-  status: z.enum(["confirmed", "completed", "cancelled", "no_show"])
+  status: z.enum(["pending", "confirmed", "completed", "cancelled", "no_show"])
 });
 
 const dashboardAppointmentSchema = z.object({
@@ -121,6 +157,19 @@ export async function updateAppointmentStatusAction(formData: FormData): Promise
     ).error
   );
 
+  revalidatePath("/isletme/takvim");
+}
+
+export async function deleteAppointmentAction(id: string): Promise<void> {
+  await throwIfError(
+    (
+      await (await createClient())
+        .from("appointments")
+        .delete()
+        .eq("id", id)
+        .eq("business_id", getCurrentBusinessId())
+    ).error
+  );
   revalidatePath("/isletme/takvim");
 }
 

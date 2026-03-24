@@ -7,7 +7,7 @@ import { deleteCustomerAction, updateCustomerAction } from "@/lib/actions/dashbo
 export default async function CustomersPage() {
   const { data: customers } = await (await createClient())
     .from("customers")
-    .select("id,full_name,phone,email,created_at")
+    .select("id,full_name,phone,email,created_at,appointments(id)")
     .eq("business_id", getCurrentBusinessId())
     .order("created_at", { ascending: false });
 
@@ -21,7 +21,11 @@ export default async function CustomersPage() {
             <tbody>
               {customers.map((customer) => (
                 <tr key={customer.id} className="border-b align-top">
-                  <td className="p-3">{customer.full_name}<p className="text-xs text-slate-500">{new Date(customer.created_at).toLocaleDateString("tr-TR")}</p></td>
+                  <td className="p-3">
+                    {customer.full_name}
+                    <p className="text-xs text-slate-500">{new Date(customer.created_at).toLocaleDateString("tr-TR")}</p>
+                    <p className="text-xs text-slate-500">Randevu sayısı: {(customer.appointments as { id: string }[] | null)?.length ?? 0}</p>
+                  </td>
                   <td className="p-3">
                     <form action={updateCustomerAction} className="space-y-2">
                       <input type="hidden" name="id" value={customer.id} />
