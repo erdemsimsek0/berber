@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="tr">
       <body>
         <SiteHeader />
-        <main className="container-app py-8">{children}</main>
+        <main className="container-app py-6 sm:py-8 lg:py-10">{children}</main>
       </body>
     </html>
   );

@@ -7,16 +7,22 @@ export default async function BusinessesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">İşletmeleri Keşfet</h1>
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">İşletmeleri Keşfet</h1>
+        <p className="text-sm text-slate-600 sm:text-base">Şehrinizdeki işletmeleri karşılaştırın ve saniyeler içinde randevunuzu oluşturun.</p>
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         {businesses.map((business) => (
-          <Link key={business.slug} href={`/isletmeler/${business.slug}`}>
-            <Card className="space-y-2 hover:border-blue-300">
-              <p className="text-xl font-semibold">{business.name}</p>
+          <Link key={business.slug} href={`/isletmeler/${business.slug}`} className="group">
+            <Card className="space-y-3 border-slate-200 transition group-hover:-translate-y-0.5 group-hover:border-blue-200 group-hover:shadow-md">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xl font-semibold">{business.name}</p>
+                <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">⭐ {business.rating}</span>
+              </div>
               <p className="text-sm text-slate-600">
                 {business.city} / {business.district}
               </p>
-              <p className="text-sm">⭐ {business.rating}</p>
+              <p className="text-sm font-medium text-blue-700">Detay ve randevu seçeneklerini gör →</p>
             </Card>
           </Link>
         ))}

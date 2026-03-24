@@ -41,21 +41,23 @@ export function BookingForm({ branchId, serviceId }: { branchId: string; service
   };
 
   return (
-    <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <input type="hidden" {...register("branchId")} />
       <input type="hidden" {...register("serviceId")} />
       <input type="hidden" {...register("staffId")} />
 
-      <div>
-        <label className="mb-1 block text-sm">Tarih</label>
-        <Input type="date" {...register("date")} />
-        <p className="text-xs text-red-600">{errors.date?.message}</p>
-      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="mb-1 block text-sm font-medium">Tarih</label>
+          <Input type="date" {...register("date")} />
+          <p className="text-xs text-red-600">{errors.date?.message}</p>
+        </div>
 
-      <div>
-        <label className="mb-1 block text-sm">Saat</label>
-        <Input type="time" {...register("time")} />
-        <p className="text-xs text-red-600">{errors.time?.message}</p>
+        <div>
+          <label className="mb-1 block text-sm font-medium">Saat</label>
+          <Input type="time" {...register("time")} />
+          <p className="text-xs text-red-600">{errors.time?.message}</p>
+        </div>
       </div>
 
       <Input placeholder="Ad Soyad" {...register("customerName")} />

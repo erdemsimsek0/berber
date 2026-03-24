@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { Route } from "next";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils/cn";
 
 type NavLink = {
   href: Route;
@@ -28,19 +32,30 @@ const adminLinks: NavLink[] = [
 ];
 
 export function DashboardNav({ type }: { type: "business" | "admin" }) {
+  const pathname = usePathname();
   const links = type === "business" ? businessLinks : adminLinks;
 
   return (
-    <nav className="mb-4 flex flex-wrap gap-2">
-      {links.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm hover:border-blue-400"
-        >
-          {link.label}
-        </Link>
-      ))}
+    <nav className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Panel navigasyonu">
+      {links.map((link) => {
+        const isActive = pathname === link.href;
+
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={cn(
+              "whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40",
+              isActive
+                ? "border-blue-200 bg-blue-600 text-white shadow-sm"
+                : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:text-slate-900"
+            )}
+            aria-current={isActive ? "page" : undefined}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

@@ -10,19 +10,23 @@ type Props = {
 
 export function SectionShell({ title, description, bullets = [], scope = "business" }: Props) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <DashboardNav type={scope} />
-      <h1 className="text-3xl font-bold">{title}</h1>
-      <Card className="space-y-3">
-        <p className="text-slate-700">{description}</p>
-        {bullets.length > 0 ? (
-          <ul className="list-inside list-disc space-y-1 text-sm text-slate-600">
+      <div className="space-y-2">
+        <h1 className="text-2xl font-bold sm:text-3xl">{title}</h1>
+        <p className="max-w-3xl text-sm text-slate-600 sm:text-base">{description}</p>
+      </div>
+      {bullets.length > 0 ? (
+        <Card className="overflow-hidden p-0">
+          <ul className="grid divide-y sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {bullets.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item} className="px-4 py-3 text-sm font-medium text-slate-700">
+                {item}
+              </li>
             ))}
           </ul>
-        ) : null}
-      </Card>
+        </Card>
+      ) : null}
     </div>
   );
 }

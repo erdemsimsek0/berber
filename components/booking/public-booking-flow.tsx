@@ -8,6 +8,7 @@ import { bookingSchema, type BookingInput } from "@/lib/validators/booking";
 import { createAppointmentAction } from "@/lib/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils/cn";
 import type { BusinessListItem } from "@/lib/data/types";
 
 type Props = {
@@ -20,6 +21,11 @@ type SlotResponse = {
   timeLabel: string;
   staffIds: string[];
 };
+
+const steps = ["Şube", "Hizmet", "Personel", "Tarih/Saat", "Bilgiler", "Onay"];
+
+const fieldClass =
+  "h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm text-slate-900 shadow-sm transition focus-visible:border-blue-400 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/15";
 
 export function PublicBookingFlow({ business }: Props) {
   const router = useRouter();
@@ -117,23 +123,26 @@ export function PublicBookingFlow({ business }: Props) {
   };
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap gap-2 text-xs">
-        {["Şube", "Hizmet", "Personel", "Tarih/Saat", "Bilgiler", "Onay"].map((label, index) => (
-          <span
+    <div className="space-y-6">
+      <ol className="grid gap-2 sm:grid-cols-3">
+        {steps.map((label, index) => (
+          <li
             key={label}
-            className={`rounded-full px-3 py-1 ${step >= index + 1 ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-700"}`}
+            className={cn(
+              "rounded-xl border px-3 py-2 text-xs font-medium sm:text-sm",
+              step >= index + 1 ? "border-blue-100 bg-blue-50 text-blue-700" : "border-slate-200 bg-slate-50 text-slate-600"
+            )}
           >
             {index + 1}. {label}
-          </span>
+          </li>
         ))}
-      </div>
+      </ol>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {step === 1 ? (
           <div className="space-y-3">
-            <h2 className="font-semibold">Şube Seçimi</h2>
-            <select className="h-10 w-full rounded-lg border px-3" {...register("branchId")}>
+            <h2 className="text-lg font-semibold">Şube Seçimi</h2>
+            <select className={fieldClass} {...register("branchId")}>
               {business.branches.map((branch) => (
                 <option key={branch.id} value={branch.id}>{branch.name}</option>
               ))}
@@ -144,13 +153,13 @@ export function PublicBookingFlow({ business }: Props) {
 
         {step === 2 ? (
           <div className="space-y-3">
-            <h2 className="font-semibold">Hizmet Seçimi</h2>
-            <select className="h-10 w-full rounded-lg border px-3" {...register("serviceId")}>
+            <h2 className="text-lg font-semibold">Hizmet Seçimi</h2>
+            <select className={fieldClass} {...register("serviceId")}>
               {business.services.map((service) => (
                 <option key={service.id} value={service.id}>{service.name} - ₺{service.price_try}</option>
               ))}
             </select>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="button" variant="outline" onClick={() => setStep(1)}>Geri</Button>
               <Button type="button" onClick={() => setStep(3)}>Devam</Button>
             </div>
@@ -159,9 +168,9 @@ export function PublicBookingFlow({ business }: Props) {
 
         {step === 3 ? (
           <div className="space-y-3">
-            <h2 className="font-semibold">Personel Seçimi</h2>
+            <h2 className="text-lg font-semibold">Personel Seçimi</h2>
             <select
-              className="h-10 w-full rounded-lg border px-3"
+              className={fieldClass}
               value={values.staffId ?? ""}
               onChange={(event) => setValue("staffId", event.target.value || null)}
             >
@@ -170,7 +179,7 @@ export function PublicBookingFlow({ business }: Props) {
                 <option key={staff.id} value={staff.id}>{staff.full_name}</option>
               ))}
             </select>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="button" variant="outline" onClick={() => setStep(2)}>Geri</Button>
               <Button type="button" onClick={() => setStep(4)}>Devam</Button>
             </div>
@@ -179,16 +188,21 @@ export function PublicBookingFlow({ business }: Props) {
 
         {step === 4 ? (
           <div className="space-y-3">
-            <h2 className="font-semibold">Tarih ve Saat</h2>
+            <h2 className="text-lg font-semibold">Tarih ve Saat</h2>
             <Input type="date" {...register("date")} />
             <Button type="button" variant="outline" onClick={loadSlots}>Uygun Saatleri Getir</Button>
             <p className="text-sm text-slate-600">{slotMessage}</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {slots.map((slot) => (
                 <button
                   key={slot.startAt}
                   type="button"
-                  className={`rounded-lg border px-2 py-2 text-sm ${values.time === slot.timeLabel ? "border-blue-600 bg-blue-50" : "border-slate-300"}`}
+                  className={cn(
+                    "rounded-xl border px-2 py-2 text-sm transition",
+                    values.time === slot.timeLabel
+                      ? "border-blue-200 bg-blue-50 text-blue-700"
+                      : "border-slate-300 bg-white hover:border-slate-400"
+                  )}
                   onClick={() => setValue("time", slot.timeLabel)}
                 >
                   {slot.timeLabel}
@@ -196,7 +210,7 @@ export function PublicBookingFlow({ business }: Props) {
               ))}
             </div>
             <p className="text-xs text-red-600">{errors.time?.message}</p>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="button" variant="outline" onClick={() => setStep(3)}>Geri</Button>
               <Button type="button" onClick={() => setStep(5)}>Devam</Button>
             </div>
@@ -205,14 +219,14 @@ export function PublicBookingFlow({ business }: Props) {
 
         {step === 5 ? (
           <div className="space-y-3">
-            <h2 className="font-semibold">Müşteri Bilgileri</h2>
+            <h2 className="text-lg font-semibold">Müşteri Bilgileri</h2>
             <Input placeholder="Ad Soyad" {...register("customerName")} />
             <p className="text-xs text-red-600">{errors.customerName?.message}</p>
             <Input placeholder="Telefon" {...register("customerPhone")} />
             <p className="text-xs text-red-600">{errors.customerPhone?.message}</p>
             <Input placeholder="E-posta" {...register("customerEmail")} />
             <p className="text-xs text-red-600">{errors.customerEmail?.message}</p>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="button" variant="outline" onClick={() => setStep(4)}>Geri</Button>
               <Button type="button" onClick={() => setStep(6)}>Özeti Gör</Button>
             </div>
@@ -220,8 +234,8 @@ export function PublicBookingFlow({ business }: Props) {
         ) : null}
 
         {step === 6 ? (
-          <div className="space-y-3 rounded-xl border p-4">
-            <h2 className="font-semibold">Randevu Özeti</h2>
+          <div className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+            <h2 className="text-lg font-semibold">Randevu Özeti</h2>
             <p><strong>İşletme:</strong> {business.name}</p>
             <p><strong>Şube:</strong> {selectedBranch?.name}</p>
             <p><strong>Hizmet:</strong> {selectedService?.name} ({selectedService?.duration_min} dk)</p>
@@ -231,7 +245,7 @@ export function PublicBookingFlow({ business }: Props) {
 
             {globalMessage ? <p className="text-sm text-red-600">{globalMessage}</p> : null}
 
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="button" variant="outline" onClick={() => setStep(5)}>Geri</Button>
               <Button disabled={isPending || submittingRef.current} type="submit">
                 {isPending ? "Randevu Oluşturuluyor..." : "Randevuyu Onayla"}
