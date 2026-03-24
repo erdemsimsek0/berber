@@ -76,9 +76,14 @@ export default async function BusinessDetailPage({ params }: Props) {
             ) : (
               <div className="grid gap-3 md:grid-cols-2">
                 {business.staff.map((staff) => (
-                  <div key={staff.id} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                    <p className="font-medium text-white">{staff.full_name}</p>
-                    <p className="text-sm">Aktif personel</p>
+                  <div key={staff.id} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-violet-500/40 to-blue-500/40 text-sm font-semibold text-white">
+                      {staff.full_name.split(" ").map((item) => item[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">{staff.full_name}</p>
+                      <p className="text-sm">Aktif personel</p>
+                    </div>
                   </div>
                 ))}
               </div>

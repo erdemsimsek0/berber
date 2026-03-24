@@ -42,18 +42,18 @@ const popular = [
 
 export default function HomePage() {
   return (
-    <div className="space-y-12">
-      <Section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-7 shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-10 lg:p-14">
+    <div className="section-gap">
+      <Section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-7 text-center shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-10 lg:p-14">
         <div className="absolute -left-14 top-0 h-40 w-40 rounded-full bg-violet-500/30 blur-3xl" aria-hidden />
         <div className="absolute -right-20 bottom-0 h-52 w-52 rounded-full bg-blue-500/25 blur-3xl" aria-hidden />
         <Badge variant="accent">Yeni Nesil Randevu Platformu</Badge>
-        <h1 className="max-w-4xl text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-          Berber ve Güzellik Salonları için Online Randevu Sistemi
+        <h1 className="mx-auto max-w-4xl text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+          <span className="gradient-text">Berber ve Güzellik Salonları için</span> Online Randevu Sistemi
         </h1>
-        <p className="max-w-2xl text-sm sm:text-base">
+        <p className="mx-auto max-w-2xl text-sm sm:text-base">
           İşletmenizin randevu, personel ve müşteri süreçlerini tek panelde toplayın. Müşterileriniz hızlıca uygun saat bulsun, siz operasyonu net yönetin.
         </p>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <Button asChild size="lg"><Link href="/baslangic/isletme">Ücretsiz Başla</Link></Button>
           <Button asChild size="lg" variant="outline"><Link href="/isletmeler">Demo Gör</Link></Button>
         </div>

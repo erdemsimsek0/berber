@@ -1,6 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { DashboardNav } from "@/components/shared/dashboard-nav";
 import { Badge } from "@/components/ui/badge";
+import { Sidebar } from "@/components/shared/sidebar";
+import { Navbar } from "@/components/shared/navbar";
+import { Tabs } from "@/components/ui/tabs";
 
 export default function BusinessDashboardPage() {
   const stats = [
@@ -12,21 +15,25 @@ export default function BusinessDashboardPage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <aside className="lg:sticky lg:top-24 lg:h-fit">
-        <Card className="space-y-3 p-4">
-          <p className="text-xs uppercase tracking-wider text-slate-400">İşletme Paneli</p>
-          <DashboardNav type="business" />
-        </Card>
-      </aside>
+      <Sidebar title="İşletme Paneli">
+        <DashboardNav type="business" />
+      </Sidebar>
 
       <div className="space-y-5">
-        <Card className="flex flex-wrap items-center justify-between gap-3 p-5">
-          <div>
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <p className="text-sm">İşletmenizin haftalık görünümünü buradan takip edin.</p>
-          </div>
-          <Badge variant="accent">Canlı Görünüm</Badge>
-        </Card>
+        <Navbar
+          left={
+            <div>
+              <h1 className="text-3xl font-bold">Dashboard</h1>
+              <p className="text-sm">İşletmenizin haftalık görünümünü buradan takip edin.</p>
+            </div>
+          }
+          right={
+            <div className="flex items-center gap-2">
+              <Tabs items={[{ label: "Bugün", value: "today" }, { label: "Hafta", value: "week" }, { label: "Ay", value: "month" }]} />
+              <Badge variant="accent">Canlı Görünüm</Badge>
+            </div>
+          }
+        />
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map(([key, value]) => (

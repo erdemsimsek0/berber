@@ -1,5 +1,7 @@
 import { DashboardNav } from "@/components/shared/dashboard-nav";
 import { Card } from "@/components/ui/card";
+import { Sidebar } from "@/components/shared/sidebar";
+import { Navbar } from "@/components/shared/navbar";
 
 type Props = {
   title: string;
@@ -11,18 +13,12 @@ type Props = {
 export function SectionShell({ title, description, bullets = [], scope = "business" }: Props) {
   return (
     <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <aside className="space-y-3 lg:sticky lg:top-24 lg:h-fit">
-        <Card className="space-y-3 p-4">
-          <p className="text-xs uppercase tracking-wider text-slate-400">Panel</p>
-          <DashboardNav type={scope} />
-        </Card>
-      </aside>
+      <Sidebar title="Panel">
+        <DashboardNav type={scope} />
+      </Sidebar>
 
       <div className="space-y-5">
-        <Card className="space-y-2 p-5">
-          <h1 className="text-3xl font-bold">{title}</h1>
-          <p className="text-sm sm:text-base">{description}</p>
-        </Card>
+        <Navbar left={<div><h1 className="text-3xl font-bold">{title}</h1><p className="text-sm sm:text-base">{description}</p></div>} />
 
         {bullets.length > 0 ? (
           <div className="grid gap-3 md:grid-cols-3">

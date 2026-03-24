@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Select } from "@/components/ui/select";
 import { getBusinesses } from "@/lib/data/queries";
 
 type SearchParams = {
@@ -38,7 +39,7 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
   });
 
   return (
-    <div className="space-y-6">
+    <div className="section-gap">
       <div className="space-y-2">
         <h1 className="text-4xl font-bold">İşletmeleri Keşfet</h1>
         <p className="text-sm sm:text-base">Şehir ve kategoriye göre filtrele, işletme detayını incele, randevuya geç.</p>
@@ -46,14 +47,14 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
 
       <Card className="space-y-4">
         <form className="grid gap-3 md:grid-cols-3" method="get" action="/isletmeler">
-          <select name="city" defaultValue={city}>
+          <Select name="city" defaultValue={city}>
             <option value="">Tüm şehirler</option>
             {cities.map((item) => <option key={item} value={item}>{item}</option>)}
-          </select>
-          <select name="category" defaultValue={category}>
+          </Select>
+          <Select name="category" defaultValue={category}>
             <option value="">Tüm kategoriler</option>
             {categories.map((item) => <option key={item} value={item}>{item}</option>)}
-          </select>
+          </Select>
           <div className="flex gap-2">
             <Button type="submit" variant="outline">Filtrele</Button>
             <Button asChild variant="ghost"><Link href="/isletmeler">Temizle</Link></Button>

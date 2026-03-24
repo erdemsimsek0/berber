@@ -9,6 +9,7 @@ import { createAppointmentAction } from "@/lib/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils/cn";
 import type { BusinessListItem } from "@/lib/data/types";
 
@@ -115,8 +116,8 @@ export function PublicBookingFlow({ business }: Props) {
           {step === 1 && (
             <div className="space-y-3">
               <h2 className="text-lg font-semibold">Hizmet Seçimi</h2>
-              <select {...register("branchId")}>{business.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select>
-              <select {...register("serviceId")}>{business.services.map((service) => <option key={service.id} value={service.id}>{service.name} - ₺{service.price_try}</option>)}</select>
+              <Select {...register("branchId")}>{business.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</Select>
+              <Select {...register("serviceId")}>{business.services.map((service) => <option key={service.id} value={service.id}>{service.name} - ₺{service.price_try}</option>)}</Select>
               <Button type="button" onClick={() => setStep(2)}>Devam</Button>
             </div>
           )}
@@ -124,10 +125,10 @@ export function PublicBookingFlow({ business }: Props) {
           {step === 2 && (
             <div className="space-y-3">
               <h2 className="text-lg font-semibold">Personel Seçimi</h2>
-              <select value={values.staffId ?? ""} onChange={(event) => setValue("staffId", event.target.value || null)}>
+              <Select value={values.staffId ?? ""} onChange={(event) => setValue("staffId", event.target.value || null)}>
                 <option value="">Müsait herhangi biri</option>
                 {staffOptions.map((staff) => <option key={staff.id} value={staff.id}>{staff.full_name}</option>)}
-              </select>
+              </Select>
               <div className="flex gap-2">
                 <Button type="button" variant="outline" onClick={() => setStep(1)}>Geri</Button>
                 <Button type="button" onClick={() => setStep(3)}>Devam</Button>
