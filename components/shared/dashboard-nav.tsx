@@ -1,6 +1,12 @@
 import Link from "next/link";
+import type { Route } from "next";
 
-const businessLinks = [
+type NavLink = {
+  href: Route;
+  label: string;
+};
+
+const businessLinks: NavLink[] = [
   { href: "/isletme/panel", label: "Genel Bakış" },
   { href: "/isletme/takvim", label: "Takvim" },
   { href: "/isletme/hizmetler", label: "Hizmetler" },
@@ -13,7 +19,7 @@ const businessLinks = [
   { href: "/isletme/abonelik", label: "Abonelik" }
 ];
 
-const adminLinks = [
+const adminLinks: NavLink[] = [
   { href: "/admin/genel-bakis", label: "Sistem" },
   { href: "/admin/isletmeler", label: "İşletmeler" },
   { href: "/admin/abonelikler", label: "Abonelikler" }

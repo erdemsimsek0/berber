@@ -22,25 +22,27 @@ export async function createAppointmentAction(formData: FormData) {
 
   const supabase = await createClient();
 
-  const { data: business } = await supabase
+  const { data: businessData } = await supabase
     .from("branches")
     .select("business_id")
     .eq("id", parsed.data.branchId)
     .single();
+  const business = businessData as { business_id: string } | null;
 
   if (!business) return { ok: false as const, message: "Şube bulunamadı" };
 
-  const { data: existingCustomer } = await supabase
+  const { data: existingCustomerData } = await supabase
     .from("customers")
     .select("id")
     .eq("business_id", business.business_id)
     .eq("phone", parsed.data.customerPhone)
     .maybeSingle();
+  const existingCustomer = existingCustomerData as { id: string } | null;
 
   let customerId = existingCustomer?.id;
 
   if (!customerId) {
-    const { data: customer, error: customerInsertError } = await supabase
+    const { data: customerData, error: customerInsertError } = await supabase
       .from("customers")
       .insert({
         business_id: business.business_id,
@@ -50,17 +52,19 @@ export async function createAppointmentAction(formData: FormData) {
       })
       .select("id")
       .single();
+    const customer = customerData as { id: string } | null;
 
     if (customerInsertError || !customer) return { ok: false as const, message: "Müşteri kaydı başarısız" };
     customerId = customer.id;
   }
 
   const startAt = new Date(`${parsed.data.date}T${parsed.data.time}:00+03:00`);
-  const { data: service } = await supabase
+  const { data: serviceData } = await supabase
     .from("services")
     .select("duration_min")
     .eq("id", parsed.data.serviceId)
     .single();
+  const service = serviceData as { duration_min: number } | null;
 
   if (!service) return { ok: false as const, message: "Hizmet bulunamadı" };
 
