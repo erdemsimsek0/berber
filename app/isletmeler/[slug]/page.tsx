@@ -35,7 +35,7 @@ export default async function BusinessDetailPage({ params }: Props) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="section-gap">
       <div className="h-56 rounded-[28px] border border-white/10 bg-gradient-to-r from-violet-500/30 via-blue-500/30 to-pink-500/25 sm:h-72" />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">

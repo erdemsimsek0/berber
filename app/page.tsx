@@ -43,7 +43,7 @@ const popular = [
 export default function HomePage() {
   return (
     <div className="section-gap">
-      <Section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 p-7 text-center shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:p-10 lg:p-14">
+      <Section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/5 px-6 py-10 text-center shadow-[0_12px_48px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:px-10 sm:py-12 lg:px-14 lg:py-16">
         <div className="absolute -left-14 top-0 h-40 w-40 rounded-full bg-violet-500/30 blur-3xl" aria-hidden />
         <div className="absolute -right-20 bottom-0 h-52 w-52 rounded-full bg-blue-500/25 blur-3xl" aria-hidden />
         <Badge variant="accent">Yeni Nesil Randevu Platformu</Badge>
@@ -62,7 +62,7 @@ export default function HomePage() {
       <Section>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(([label, value]) => (
-            <Card key={label} className="space-y-1 p-5">
+            <Card key={label} className="space-y-2">
               <p className="text-sm text-slate-400">{label}</p>
               <p className="text-2xl font-semibold text-white">{value}</p>
             </Card>
@@ -74,8 +74,9 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold">Öne çıkan özellikler</h2>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {features.map((item) => (
-            <Card key={item} className="p-6">
+            <Card key={item} className="group p-6">
               <p className="text-lg font-semibold text-white">{item}</p>
+              <p className="text-sm text-slate-400 transition group-hover:text-slate-300">Operasyonu sadeleştiren modüler yapı.</p>
             </Card>
           ))}
         </div>
@@ -85,7 +86,7 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold">Nasıl çalışır?</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {howItWorks.map(([step, title, desc]) => (
-            <Card key={step} className="space-y-3 p-6">
+            <Card key={step} className="space-y-3">
               <Badge>{step}</Badge>
               <h3 className="text-xl font-semibold">{title}</h3>
               <p className="text-sm">{desc}</p>
@@ -101,7 +102,7 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {popular.map(([name, location, category]) => (
-            <Card key={name} className="space-y-2 p-6">
+            <Card key={name} className="space-y-3">
               <div className="h-28 rounded-2xl bg-gradient-to-r from-violet-500/35 to-blue-500/35" />
               <h3 className="text-lg font-semibold">{name}</h3>
               <p className="text-sm">{location}</p>

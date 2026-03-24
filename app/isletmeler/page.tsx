@@ -55,9 +55,9 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
             <option value="">Tüm kategoriler</option>
             {categories.map((item) => <option key={item} value={item}>{item}</option>)}
           </Select>
-          <div className="flex gap-2">
-            <Button type="submit" variant="outline">Filtrele</Button>
-            <Button asChild variant="ghost"><Link href="/isletmeler">Temizle</Link></Button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button type="submit" variant="outline" className="w-full sm:w-auto">Filtrele</Button>
+            <Button asChild variant="ghost" className="w-full sm:w-auto"><Link href="/isletmeler">Temizle</Link></Button>
           </div>
         </form>
       </Card>
@@ -72,7 +72,7 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map((business) => (
-            <Card key={business.slug} className="space-y-4 p-4">
+            <Card key={business.slug} className="group space-y-4 p-4">
               <div className="h-36 rounded-2xl bg-gradient-to-r from-violet-500/30 via-blue-500/30 to-pink-500/25" />
               <div className="space-y-1">
                 <h2 className="text-xl font-semibold text-white">{business.name}</h2>
@@ -80,7 +80,7 @@ export default async function BusinessesPage({ searchParams }: { searchParams: P
               </div>
               <div className="flex items-center justify-between gap-3">
                 <Badge>⭐ {business.rating}</Badge>
-                <Button asChild size="sm"><Link href={`/isletmeler/${business.slug}`}>Detaya Git</Link></Button>
+                <Button asChild size="sm" className="group-hover:translate-y-[-1px]"><Link href={`/isletmeler/${business.slug}`}>Detaya Git</Link></Button>
               </div>
             </Card>
           ))}
