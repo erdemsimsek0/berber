@@ -81,21 +81,25 @@ export async function createAppointmentAction(formData: FormData) {
     return { ok: false as const, message: "Seçilen saat artık uygun değil. Lütfen farklı bir saat seçin." };
   }
 
-  const { error } = await supabase.from("appointments").insert({
-    business_id: business.business_id,
-    branch_id: parsed.data.branchId,
-    service_id: parsed.data.serviceId,
-    staff_id: slot.staffId,
-    customer_id: customerId,
-    start_at: slot.startAt.toISOString(),
-    end_at: slot.endAt.toISOString(),
-    status: "pending"
-  });
+  const { data: appointmentData, error } = await supabase
+    .from("appointments")
+    .insert({
+      business_id: business.business_id,
+      branch_id: parsed.data.branchId,
+      service_id: parsed.data.serviceId,
+      staff_id: slot.staffId,
+      customer_id: customerId,
+      start_at: slot.startAt.toISOString(),
+      end_at: slot.endAt.toISOString(),
+      status: "pending"
+    })
+    .select("id")
+    .single();
 
-  if (error) return { ok: false as const, message: error.message };
+  if (error || !appointmentData) return { ok: false as const, message: error?.message ?? "Randevu oluşturulamadı" };
 
   revalidatePath("/musteri/randevular");
-  return { ok: true as const, message: "Randevunuz başarıyla oluşturuldu." };
+  return { ok: true as const, message: "Randevunuz başarıyla oluşturuldu.", appointmentId: appointmentData.id };
 }
 
 export async function cancelAppointmentAction(appointmentId: string) {

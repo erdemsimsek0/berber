@@ -12,6 +12,13 @@ export type BusinessBranch = {
   phone: string | null;
 };
 
+export type BusinessStaff = {
+  id: string;
+  full_name: string;
+  branch_id: string | null;
+  is_active: boolean;
+};
+
 export type BusinessListItem = {
   id: string;
   slug: string;
@@ -22,4 +29,5 @@ export type BusinessListItem = {
   rating: number;
   branches: BusinessBranch[];
   services: BusinessService[];
+  staff: BusinessStaff[];
 };

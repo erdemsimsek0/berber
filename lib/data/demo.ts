@@ -20,6 +20,9 @@ export const demoBusinesses: BusinessListItem[] = [
     services: [
       { id: "22222222-2222-2222-2222-222222222222", name: "Saç Kesimi", duration_min: 45, price_try: 450 },
       { id: "22222222-2222-2222-2222-222222222223", name: "Sakal Tasarım", duration_min: 30, price_try: 300 }
+    ],
+    staff: [
+      { id: "33333333-3333-3333-3333-333333333333", full_name: "Emre Usta", branch_id: "11111111-1111-1111-1111-111111111111", is_active: true }
     ]
   },
   {
@@ -41,6 +44,9 @@ export const demoBusinesses: BusinessListItem[] = [
     services: [
       { id: "22222222-2222-2222-2222-222222222224", name: "Manikür", duration_min: 50, price_try: 500 },
       { id: "22222222-2222-2222-2222-222222222225", name: "Kalıcı Oje", duration_min: 60, price_try: 650 }
+    ],
+    staff: [
+      { id: "33333333-3333-3333-3333-333333333335", full_name: "Derya Nail Artist", branch_id: "11111111-1111-1111-1111-111111111112", is_active: true }
     ]
   }
 ];
