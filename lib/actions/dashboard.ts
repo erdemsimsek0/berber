@@ -80,3 +80,88 @@ export async function updateBusinessSettingsAction(formData: FormData): Promise<
   await throwIfError((await (await createClient()).from("businesses").update({ name: data.name, description: data.description || null, city: data.city, district: data.district, is_active: data.is_active ?? true }).eq("id", getCurrentBusinessId())).error);
   revalidatePath("/isletme/ayarlar");
 }
+
+const appointmentStatusSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum(["confirmed", "completed", "cancelled", "no_show"])
+});
+
+const dashboardAppointmentSchema = z.object({
+  branch_id: z.string().uuid(),
+  service_id: z.string().uuid(),
+  staff_id: z.string().uuid().nullable().optional(),
+  customer_id: z.string().uuid(),
+  date: z.string().min(1),
+  time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/),
+  notes: z.string().optional().or(z.literal(""))
+});
+
+export async function updateAppointmentStatusAction(formData: FormData): Promise<void> {
+  const data = ensure(
+    appointmentStatusSchema.safeParse({
+      id: formData.get("id"),
+      status: formData.get("status")
+    }),
+    "Randevu durumu geçersiz"
+  );
+
+  await throwIfError(
+    (
+      await (await createClient())
+        .from("appointments")
+        .update({ status: data.status })
+        .eq("id", data.id)
+        .eq("business_id", getCurrentBusinessId())
+    ).error
+  );
+
+  revalidatePath("/isletme/takvim");
+}
+
+export async function createDashboardAppointmentAction(formData: FormData): Promise<void> {
+  const data = ensure(
+    dashboardAppointmentSchema.safeParse({
+      branch_id: formData.get("branch_id"),
+      service_id: formData.get("service_id"),
+      staff_id: normalizeNullable(formData.get("staff_id")),
+      customer_id: formData.get("customer_id"),
+      date: formData.get("date"),
+      time: formData.get("time"),
+      notes: formData.get("notes")
+    }),
+    "Randevu verisi geçersiz"
+  );
+
+  const supabase = await createClient();
+  const businessId = getCurrentBusinessId();
+
+  const { data: service } = await supabase
+    .from("services")
+    .select("duration_min")
+    .eq("id", data.service_id)
+    .eq("business_id", businessId)
+    .maybeSingle();
+
+  if (!service) throw new Error("Hizmet bulunamadı");
+
+  const startAt = new Date(`${data.date}T${data.time}:00+03:00`);
+  const endAt = new Date(startAt.getTime() + (service as { duration_min: number }).duration_min * 60 * 1000);
+
+  await throwIfError(
+    (
+      await supabase.from("appointments").insert({
+        business_id: businessId,
+        branch_id: data.branch_id,
+        service_id: data.service_id,
+        staff_id: data.staff_id ?? null,
+        customer_id: data.customer_id,
+        start_at: startAt.toISOString(),
+        end_at: endAt.toISOString(),
+        status: "confirmed",
+        notes: data.notes || null
+      })
+    ).error
+  );
+
+  revalidatePath("/isletme/takvim");
+}
