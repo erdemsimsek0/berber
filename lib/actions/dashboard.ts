@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentBusinessId } from "@/lib/dashboard/context";
+import { assertMonthlyAppointmentLimit, assertStaffLimit } from "@/lib/billing/limits";
 
 const serviceSchema = z.object({ id: z.string().uuid().optional(), name: z.string().min(2), duration_min: z.coerce.number().int().min(5), price_try: z.coerce.number().min(0), branch_id: z.string().uuid().nullable().optional(), is_active: z.coerce.boolean().optional() });
 const staffSchema = z.object({ id: z.string().uuid().optional(), full_name: z.string().min(2), phone: z.string().min(10).optional().or(z.literal("")), branch_id: z.string().uuid().nullable().optional(), is_active: z.coerce.boolean().optional() });
@@ -30,6 +31,7 @@ export async function deleteServiceAction(id: string): Promise<void> { await thr
 export async function upsertStaffAction(formData: FormData): Promise<void> {
   const data = ensure(staffSchema.safeParse({ id: normalizeNullable(formData.get("id")) ?? undefined, full_name: formData.get("full_name"), phone: formData.get("phone"), branch_id: normalizeNullable(formData.get("branch_id")), is_active: formData.get("is_active") === "on" }), "Personel verisi geçersiz");
   const supabase = await createClient(); const businessId = getCurrentBusinessId();
+  if (!data.id) await assertStaffLimit(businessId);
   if (data.id) await throwIfError((await supabase.from("staff").update({ full_name: data.full_name, phone: data.phone || null, branch_id: data.branch_id, is_active: data.is_active ?? true }).eq("id", data.id).eq("business_id", businessId)).error);
   else await throwIfError((await supabase.from("staff").insert({ business_id: businessId, full_name: data.full_name, phone: data.phone || null, branch_id: data.branch_id, is_active: true })).error);
   revalidatePath("/isletme/personel");
@@ -138,6 +140,7 @@ export async function createDashboardAppointmentAction(formData: FormData): Prom
 
   const supabase = await createClient();
   const businessId = getCurrentBusinessId();
+  await assertMonthlyAppointmentLimit(businessId);
 
   const { data: service } = await supabase
     .from("services")

@@ -41,6 +41,13 @@ Proje kökünde `.env.local` oluşturun:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+NEXT_PUBLIC_DEMO_MODE=true
+
+# Stripe (abonelik için zorunlu)
+STRIPE_SECRET_KEY=...
+STRIPE_PRICE_PRO_MONTHLY=...
+STRIPE_PRICE_PRO_YEARLY=...
+DEMO_OWNER_EMAIL=demo@randevutr.com
 ```
 
 > Bu değişkenler yoksa public sayfalarda demo veri fallback'i devreye girer.
@@ -95,3 +102,4 @@ npm run typecheck  # TypeScript kontrolü
 - `npm run build`
 - Supabase ortam değişkenlerini doğrulama
 - RLS politikalarını staging veritabanında test etme
+- Stripe checkout + webhook endpointlerini test etme (`/api/stripe/checkout`, `/api/stripe/webhook`)

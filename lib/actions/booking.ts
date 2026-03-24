@@ -5,6 +5,7 @@ import { z } from "zod";
 import { bookingSchema } from "@/lib/validators/booking";
 import { createClient } from "@/lib/supabase/server";
 import { resolveBookableSlot } from "@/lib/booking/availability";
+import { assertMonthlyAppointmentLimit } from "@/lib/billing/limits";
 
 const branchBusinessSchema = z.object({ business_id: z.string().uuid() });
 const customerIdSchema = z.object({ id: z.string().uuid() });
@@ -46,6 +47,7 @@ export async function createAppointmentAction(formData: FormData) {
     if (!branchBusiness.success) return errorResult("Şube verisi doğrulanamadı");
 
     const businessId = branchBusiness.data.business_id;
+    await assertMonthlyAppointmentLimit(businessId);
 
     const { data: existingCustomerData, error: existingCustomerError } = await supabase
       .from("customers")

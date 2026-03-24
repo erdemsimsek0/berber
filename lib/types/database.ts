@@ -171,9 +171,30 @@ export type Database = {
           id: string;
           business_id: string;
           plan_code: string;
+          plan_type: "free" | "pro" | null;
+          billing_interval: "monthly" | "yearly" | null;
           status: SubscriptionStatus;
           started_at: string;
           ended_at: string | null;
+          active_until: string | null;
+          is_active: boolean;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          stripe_price_id: string | null;
+          created_at: string;
+        };
+      };
+      billing_history: {
+        Row: {
+          id: string;
+          business_id: string;
+          subscription_id: string | null;
+          amount_try: number;
+          currency: string;
+          status: string;
+          stripe_invoice_id: string | null;
+          stripe_payment_intent_id: string | null;
+          paid_at: string | null;
           created_at: string;
         };
       };
