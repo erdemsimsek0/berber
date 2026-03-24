@@ -24,8 +24,7 @@ export default async function StaffPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <SectionShell title="Personel" description="Personel CRUD, hizmet atama ve çalışma saatleri yönetimi" bullets={["Personel ekle", "Hizmet ata", "Çalışma saatleri"]} />
+    <SectionShell title="Personel" description="Personel CRUD, hizmet atama ve çalışma saatleri yönetimi" bullets={["Personel ekle", "Hizmet ata", "Çalışma saatleri"]}>
       <CrudDrawer title="Yeni Personel" buttonLabel="Personel Ekle">
         <form action={upsertStaffAction} className="grid gap-3 md:grid-cols-2">
           <input name="full_name" placeholder="Ad Soyad" className="h-10 rounded-lg border px-3" required />
@@ -76,6 +75,6 @@ export default async function StaffPage() {
           ))}
         </ul>
       </div>
-    </div>
+    </SectionShell>
   );
 }

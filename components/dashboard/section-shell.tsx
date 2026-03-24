@@ -2,15 +2,17 @@ import { DashboardNav } from "@/components/shared/dashboard-nav";
 import { Card } from "@/components/ui/card";
 import { Sidebar } from "@/components/shared/sidebar";
 import { Navbar } from "@/components/shared/navbar";
+import type { ReactNode } from "react";
 
 type Props = {
   title: string;
   description: string;
   bullets?: string[];
   scope?: "business" | "admin";
+  children?: ReactNode;
 };
 
-export function SectionShell({ title, description, bullets = [], scope = "business" }: Props) {
+export function SectionShell({ title, description, bullets = [], scope = "business", children }: Props) {
   return (
     <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
       <Sidebar title="Panel">
@@ -29,6 +31,8 @@ export function SectionShell({ title, description, bullets = [], scope = "busine
             ))}
           </div>
         ) : null}
+
+        {children ? <div className="space-y-4">{children}</div> : null}
       </div>
     </div>
   );
